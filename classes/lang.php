@@ -62,29 +62,29 @@ class Lang
 	public static function load($file, $group = null, $language = null, $overwrite = false, $reload = false)
 	{
 		// get the active language and all fallback languages
-		$language or $language = static::get_lang();
+		$_language = is_string($language) ? $language : static::get_lang();
 		$languages = static::$fallback;
 
 		// make sure we don't have the active language in the fallback array
-		if (in_array($language, $languages))
+		if (in_array($_language, $languages))
 		{
-			unset($languages[array_search($language, $languages)]);
+			unset($languages[array_search($_language, $languages)]);
 		}
 
 		// stick the active language to the front of the list
-		array_unshift($languages, $language);
+		array_unshift($languages, $_language);
 
 		if ( ! $reload and
 		     ! is_array($file) and
 		     ! is_object($file) and
-		    array_key_exists($language.'/'.$file, static::$loaded_files))
+		    array_key_exists($_language.'/'.$file, static::$loaded_files))
 		{
 			$group === true and $group = $file;
-			if ($group === null or $group === false or ! isset(static::$lines[$language][$group]))
+			if ($group === null or $group === false or ! isset(static::$lines[$_language][$group]))
 			{
 				return false;
 			}
-			return static::$lines[$language][$group];
+			return static::$lines[$_language][$group];
 		}
 
 		$lang = array();
@@ -109,7 +109,7 @@ class Lang
 
 			if (class_exists($class))
 			{
-				static::$loaded_files[$language.'/'.$file] = func_get_args();
+				static::$loaded_files[$_language.'/'.$file] = func_get_args();
 				$file = new $class($file, $languages);
 			}
 			else
@@ -131,21 +131,21 @@ class Lang
 			$group = $group === true ? $file->group() : $group;
 		}
 
-		isset(static::$lines[$language]) or static::$lines[$language] = array();
+		isset(static::$lines[$_language]) or static::$lines[$_language] = array();
 		if ($group === null)
 		{
-			static::$lines[$language] = $overwrite ? array_merge(static::$lines[$language], $lang) : \Arr::merge(static::$lines[$language], $lang);
+			static::$lines[$_language] = $overwrite ? array_merge(static::$lines[$_language], $lang) : \Arr::merge(static::$lines[$_language], $lang);
 		}
 		else
 		{
 			$group = ($group === true) ? $file : $group;
 			if ($overwrite)
 			{
-				\Arr::set(static::$lines[$language], $group, array_merge(\Arr::get(static::$lines[$language], $group, array()), $lang));
+				\Arr::set(static::$lines[$_language], $group, array_merge(\Arr::get(static::$lines[$_language], $group, array()), $lang));
 			}
 			else
 			{
-				\Arr::set(static::$lines[$language], $group, \Arr::merge(\Arr::get(static::$lines[$language], $group, array()), $lang));
+				\Arr::set(static::$lines[$_language], $group, \Arr::merge(\Arr::get(static::$lines[$_language], $group, array()), $lang));
 			}
 		}
 
