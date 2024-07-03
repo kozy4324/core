@@ -191,7 +191,8 @@ class Security
 	{
 		if ( ! is_array($value))
 		{
-			$value = filter_var(strip_tags($value), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+			$value = preg_replace('/\x00|<[^>]*>?/', '', strip_tags($value));
+			$value = str_replace(["'", '"'], ['&#39;', '&#34;'], $value);
 		}
 		else
 		{
