@@ -248,28 +248,28 @@ abstract class Image_Driver
 	{
 		if ($height == null or $width == null)
 		{
-			if ($height == null and substr($width, -1) == '%')
+			if (is_null($height) and ! is_null($width) and substr($width, -1) == '%')
 			{
 				$height = $width;
 			}
-			elseif (substr($height, -1) == '%' and $width == null)
+			elseif (is_null($width) and ! is_null($height) and substr($height, -1) == '%')
 			{
 				$width = $height;
 			}
 			else
 			{
 				$sizes = $this->sizes();
-				if ($height == null and $width != null)
+				if (is_null($height) and ! is_null($width))
 				{
 					$height = $width * ($sizes->height / $sizes->width);
 				}
-				elseif ($height != null and $width == null)
+				elseif (is_null($width) and ! is_null($height))
 				{
 					$width = $height * ($sizes->width / $sizes->height);
 				}
 				else
 				{
-					throw new \InvalidArgumentException("Width and height cannot be null.");
+					throw new \InvalidArgumentException("Width and height cannot both be null.");
 				}
 			}
 		}
