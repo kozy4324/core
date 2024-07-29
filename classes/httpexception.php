@@ -30,12 +30,6 @@ abstract class HttpException extends \FuelException
 		// get the exception response
 		$response = $this->response();
 
-		// fire any app shutdown events
-		\Event::instance()->trigger('shutdown', '', 'none', true);
-
-		// fire any framework shutdown events
-		\Event::instance()->trigger('fuel-shutdown', '', 'none', true);
-
 		// send the response out
 		$response->send(true);
 	}
