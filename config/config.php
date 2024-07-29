@@ -236,6 +236,8 @@ return array(
 
 	'locale' => 'en_US',
 
+	'locale-category' => LC_ALL,
+
 	/**
 	 * -------------------------------------------------------------------------
 	 *  Language - Character Encoding

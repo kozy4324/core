@@ -171,11 +171,18 @@ class Fuel
 
 		static::$locale = \Config::get('locale', static::$locale);
 
-		// Set locale, log warning when it fails
+		// Set locale, throw an error when it fails
 		if (static::$locale)
 		{
-			setlocale(LC_ALL, static::$locale) or
-				logger(\Fuel::L_WARNING, 'The configured locale '.static::$locale.' is not installed on your system.', __METHOD__);
+			foreach( (array) \Config::get('locale_category', LC_ALL) as $category)
+			{
+				if ( ! $set = setlocale($category, static::$locale))
+				{
+					throw new \PHPErrorException('The configured locale(s) "'.implode(',', (array) static::$locale).'" can not be found on your system.');
+				}
+			}
+			// update the locale with the one actually set
+			static::$locale = $set;
 		}
 
 		if ( ! static::$is_cli)
