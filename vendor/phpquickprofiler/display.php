@@ -120,6 +120,7 @@ function displayPqp($output) {
 #openProfiler { position: fixed; bottom: 0; right: 20px; z-index:999999; }
 #openProfiler a { height:32px;text-align:center;width:100px;background-color:#222;border:2px solid #000;border-bottom:none;font-size:12px;font-family:"Lucida Grande",Tahoma,Arial,sans-serif;-webkit-border-top-left-radius:4px;-webkit-border-top-right-radius:4px;-moz-border-radius-topleft:4px;-moz-border-radius-topright:4px;;border-top-right-radius:4px;color:#999;line-height: 32px;display:block;}
 #openProfiler a:hover {color:white;text-decoration:none}
+#pqp-container {display:none;position:inherit;}
 CSS
 );
 
@@ -325,7 +326,7 @@ CSS
 </script>
 JAVASCRIPT;
 
-$return_output .='<div style="clear:both;"></div><div id="pqp-container" class="pQp pqp-tallDetails" style="display:none;position:inherit;">';
+$return_output .='<div style="clear:both;"></div><div id="pqp-container" class="pQp pqp-tallDetails">';
 
 $logCount = count($output['logs']['console']);
 $fileCount = count($output['files']);
