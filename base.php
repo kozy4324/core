@@ -99,6 +99,14 @@ if ( ! function_exists('array_to_attr'))
 			{
 				$property = $value;
 			}
+			elseif(is_bool($value))
+			{
+				if ($value === false)
+				{
+					continue;
+				}
+				$value = $property;
+			}
 
 			$attr_str .= $property.'="'.str_replace('"', '&quot;', $value).'" ';
 		}
