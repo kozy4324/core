@@ -431,8 +431,11 @@ class Fuel
 
 			foreach ($paths + $extra as $r => $s)
 			{
-				$search[] = rtrim($s, DS).DS;
-				$replace[] = rtrim($r, DS).DS;
+				if ($s != '/' and is_dir($s))
+				{
+					$search[] = rtrim($s, DS).DS;
+					$replace[] = rtrim($r, DS).DS;
+				}
 			}
 		}
 
