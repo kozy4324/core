@@ -331,7 +331,7 @@ class Uri
 		$this->uri = trim($uri, '/');
 
 		// determine the uri segment list
-		if (empty($uri))
+		if (empty($this->uri))
 		{
 			$this->segments = array();
 		}
