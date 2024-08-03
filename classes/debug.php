@@ -163,6 +163,7 @@ JS;
 	 */
 	public static function format($name, $var, $level = 0, $indent_char = '&nbsp;&nbsp;&nbsp;&nbsp;', $scope = '')
 	{
+		$color = (is_string($var) and $var == "*uninitialized*") ? "#0000E0" : "#E00000";
 		if ($level and is_null($name))
 		{
 			$name = '<i style="color:#888">null</i>';
@@ -214,7 +215,7 @@ JS;
 		}
 		elseif (is_string($var))
 		{
-			$return .= "<i>{$scope}</i> <strong>".$name."</strong> (String): <span style=\"color:#E00000;\">\"".\Security::htmlentities($var)."\"</span> (".strlen($var)." characters)\n";
+			$return .= "<i>{$scope}</i> <strong>".$name."</strong> (String): <span style=\"color:".$color.";\">\"".\Security::htmlentities($var)."\"</span> (".strlen($var)." characters)\n";
 		}
 		elseif (is_float($var))
 		{
@@ -299,13 +300,24 @@ JS;
 				{
 					$scope = 'public';
 				}
+				if (method_exists($prop, 'getType') and $prop->getType())
+				{
+					$scope .= ' <i>'.$prop->getType().'</i>';
+				}
 				if (static::$max_nesting_level <= $level)
 				{
 					$sub_return .= str_repeat($indent_char, $level + 1)."...\n";
 				}
 				else
 				{
-					$sub_return .= static::format($prop->name, $prop->getValue($var), $level + 1, $indent_char, $scope);
+					if ( ! $prop->isInitialized($var))
+					{
+						$sub_return .= static::format($prop->name, '*uninitialized*', $level + 1, $indent_char, $scope);
+					}
+					else
+					{
+						$sub_return .= static::format($prop->name, $prop->getValue($var), $level + 1, $indent_char, $scope);
+					}
 				}
 			}
 
