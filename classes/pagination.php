@@ -262,7 +262,7 @@ class Pagination
 	public function render($raw = false)
 	{
 		// no links if we only have one page
-		if ($this->config['total_pages'] == 1)
+		if ($this->config['total_pages'] <= 1)
 		{
 			return $raw ? array() : '';
 		}
