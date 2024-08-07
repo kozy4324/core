@@ -129,7 +129,7 @@ CSS
 <!-- JavaScript -->
 <script type="text/javascript">
 	var PQP_SHOWONLOAD = (typeof PQP_SHOWONLOAD != "undefined" && PQP_SHOWONLOAD) ? "open" : "closed";
-	var PQP_HEIGHT = (typeof PQP_HEIGHT != "undefined" && PQP_HEIGHT == "tall") ? "tall" : "short";
+	var PQP_HEIGHT = (typeof PQP_HEIGHT != "undefined" && PQP_HEIGHT == "tall") ? "short" : "tall";
 	var PQP_DETAILS = (typeof PQP_DETAILS != "undefined" && PQP_DETAILS) ? true : false;
 	var PQP_BOTTOM = (typeof PQP_BOTTOM == "undefined" || PQP_BOTTOM == true) ? true : false;
 
