@@ -71,7 +71,7 @@ abstract class Session_Driver
 	{
 		// init the driver if needed
 		$this->init();
-	
+
 		// change the state to started
 		$this->_change_state('started');
 
@@ -478,6 +478,12 @@ abstract class Session_Driver
 	 */
 	protected function _change_state($newstate)
 	{
+		// no point changing to the state we're in
+		if ($newstate == $this->state)
+		{
+			return $this;
+		}
+
 		// log this request so we can trace the flow
 		logger(\Fuel::L_DEBUG, sprintf('Session state for "%s" transitioning from "%s" to "%s".', $this->get_config('cookie_name'), $this->state, $newstate), __METHOD__);
 
