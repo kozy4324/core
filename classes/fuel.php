@@ -361,7 +361,7 @@ class Fuel
 		{
 			foreach ($array['classes'] as $class)
 			{
-				if ( ! class_exists($class = \Str::ucwords($class)))
+				if ( ! \Autoloader::load(\Str::ucwords($class)))
 				{
 					throw new \FuelException('Class '.$class.' defined in your "always_load" config could not be loaded.');
 				}
