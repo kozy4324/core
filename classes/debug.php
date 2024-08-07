@@ -245,7 +245,7 @@ JS;
 			$contents = ob_get_contents();
 			ob_end_clean();
 
-			preg_match('~enum\((.*?)\)~', $contents, $matches);
+			preg_match('~enum(?:<\/b>)?\((?:<i>)?(.*?)(?:<\/i>)?\)~', $contents, $matches);
 
 			$return .= "<i>{$scope}</i> <strong>".$name."</strong> (Enum): {$matches[1]}\n";
 		}
