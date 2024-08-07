@@ -126,12 +126,20 @@ class Fuel
 			throw new \FuelException("You can't initialize Fuel more than once.");
 		}
 
+		\Config::load($config);
+
+		// Enable profiling if needed
+		static::$profiling = \Config::get('profiling', false);
+		if (static::$profiling or \Config::get('log_profile_data', false))
+		{
+			\Profiler::init();
+			\Profiler::mark(__METHOD__.' Start');
+		}
+
 		static::$_paths = array(APPPATH, COREPATH);
 
 		// Is Fuel running on the command line?
 		static::$is_cli = (bool) defined('STDIN');
-
-		\Config::load($config);
 
 		// Disable output compression if the client doesn't support it
 		if (static::$is_cli or ! in_array('gzip', explode(', ', \Input::headers('Accept-Encoding', ''))))
@@ -145,13 +153,6 @@ class Fuel
 		if (\Config::get('caching', false))
 		{
 			\Finder::instance()->read_cache('FuelFileFinder');
-		}
-
-		// Enable profiling if needed
-		static::$profiling = \Config::get('profiling', false);
-		if (static::$profiling or \Config::get('log_profile_data', false))
-		{
-			\Profiler::init();
 		}
 
 		// set a default timezone if one is defined
