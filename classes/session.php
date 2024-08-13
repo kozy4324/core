@@ -77,48 +77,97 @@ class Session
 		if (\Config::get('session.native_emulation', false))
 		{
 			// emulate native PHP sessions
-			session_set_save_handler(
-				// open
-				function ($savePath, $sessionName) {
-					return true;
-				},
-				// close
-				function () {
-					return true;
-				},
-				// read
-				function ($sessionId) {
-					// copy all existing session vars into the PHP session store
-					$_SESSION = \Session::get();
-					$_SESSION['__org__'] = $_SESSION;
-					return '';
-				},
-				// write
-				function ($sessionId, $data) {
-					// get the original data
-					$org = isset($_SESSION['__org__']) ? $_SESSION['__org__'] : array();
-					unset($_SESSION['__org__']);
+			if (PHP_VERSION_ID < 80000)
+			{
+				session_set_save_handler(
+					// open
+					function ($savePath, $sessionName) {
+						return true;
+					},
+					// close
+					function () {
+						return true;
+					},
+					// read
+					function ($sessionId) {
+						// copy all existing session vars into the PHP session store
+						$_SESSION = \Session::get();
+						$_SESSION['__org__'] = $_SESSION;
+						return '';
+					},
+					// write
+					function ($sessionId, $data) {
+						// get the original data
+						$org = isset($_SESSION['__org__']) ? $_SESSION['__org__'] : array();
+						unset($_SESSION['__org__']);
 
-					// do we need to remove stuff?
-					if ($remove = array_diff_key($org, $_SESSION))
-					{
-						\Session::delete(array_keys($remove));
+						// do we need to remove stuff?
+						if ($remove = array_diff_key($org, $_SESSION))
+						{
+							\Session::delete(array_keys($remove));
+						}
+
+						// add or update the remainder
+						empty($_SESSION) or \Session::set($_SESSION);
+						return true;
+					},
+					// destroy
+					function ($sessionId) {
+						\Session::destroy();
+						return true;
+					},
+					// gc
+					function ($lifetime) {
+						return true;
 					}
-
-					// add or update the remainder
-					empty($_SESSION) or \Session::set($_SESSION);
-					return true;
-				},
-				// destroy
-				function ($sessionId) {
-					\Session::destroy();
-					return true;
-				},
-				// gc
-				function ($lifetime) {
-					return true;
-				}
 			);
+			}
+			else
+			{
+				$sessionHandler = new class() implements SessionHandlerInterface {
+					public function open(string $path, string $name): bool
+					{
+						return true;
+					}
+					public function close(): bool
+					{
+						return true;
+					}
+					public function read(string $id): string|false
+					{
+						// copy all existing session vars into the PHP session store
+						$_SESSION = \Session::get();
+						$_SESSION['__org__'] = $_SESSION;
+						return '';
+					}
+					public function write(string $id, string $data): bool
+					{
+						// get the original data
+						$org = isset($_SESSION['__org__']) ? $_SESSION['__org__'] : array();
+						unset($_SESSION['__org__']);
+
+						// do we need to remove stuff?
+						if ($remove = array_diff_key($org, $_SESSION))
+						{
+							\Session::delete(array_keys($remove));
+						}
+
+						// add or update the remainder
+						empty($_SESSION) or \Session::set($_SESSION);
+						return true;
+					}
+					public function destroy(string $id): bool
+					{
+						\Session::destroy();
+						return true;
+					}
+					public function gc(int $max_lifetime): int|false
+					{
+						return true;
+					}
+				};
+				session_set_save_handler($sessionHandler);
+			}
 		}
 	}
 
