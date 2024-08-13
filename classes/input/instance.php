@@ -101,6 +101,9 @@ class Input_Instance
 		}
 		else
 		{
+			// uri detection
+			$this->uri();
+
 			// fetch global input data
 			$this->hydrate();
 		}
