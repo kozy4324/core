@@ -169,19 +169,25 @@ class Security
 
 	public static function xss_clean($value, array $options = array(), $spec = '')
 	{
-		if ( ! is_array($value))
+		// load our cleaner if needed
+		if ( ! function_exists('htmLawed'))
 		{
-			if ( ! function_exists('htmLawed'))
-			{
-				import('htmlawed/htmlawed', 'vendor');
-			}
-
-			return htmLawed($value, array_merge(array('safe' => 1, 'balanced' => 0), $options), $spec);
+			import('htmlawed/htmlawed', 'vendor');
 		}
 
-		foreach ($value as $k => $v)
+		// clean all elements of the array individually
+		if ( is_array($value))
 		{
-			$value[$k] = static::xss_clean($v, $options, $spec);
+			foreach ($value as $k => $v)
+			{
+				$value[$k] = static::xss_clean($v, $options, $spec);
+			}
+		}
+
+		// only strings van be cleaned
+		elseif (is_string($value))
+		{
+			$value = htmLawed($value, array_merge(array('safe' => 1, 'balanced' => 0), $options), $spec);
 		}
 
 		return $value;
