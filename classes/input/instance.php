@@ -325,10 +325,18 @@ class Input_Instance
 	 */
 	public function raw()
 	{
+		// we need to read the input only once
+		static $raw_input;
+
+		if ($raw_input === null)
+		{
+			$raw_input = file_get_contents('php://input');
+		}
+
 		if ($this->raw_input === null)
 		{
-			// get php raw input
-			$this->raw_input = file_get_contents('php://input');
+			// get php raw input stored earlier
+			$this->raw_input = $raw_input;
 		}
 
 		return $this->raw_input;
