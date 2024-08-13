@@ -37,8 +37,18 @@ class Input
 	 *
 	 * @return Input_Instance
 	 */
-	public static function forge(Request $new = null, Input_Instance $input = null)
+	public static function forge($new = null, $input = null)
 	{
+		if ( ! is_null($new) and ! $new instanceOf Request)
+		{
+			throw new \FuelException(__FUNCTION__ . ': Argument #1 ($new) must be an instance of Request, ' . gettype($new) . ' given');
+		}
+
+		if ( ! is_null($input) and ! $input instanceOf Input_Instance)
+		{
+			throw new \FuelException(__FUNCTION__ . ': Argument #2 ($input) must be an instance of Input_Instance, ' . gettype($input) . ' given');
+		}
+
 		if ($new)
 		{
 			return new \Input_Instance($new, $input);

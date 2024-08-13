@@ -82,8 +82,20 @@ class Input_Instance
 	/**
 	 *
 	 */
-	public function __construct(Request $new = null, Input_Instance $input = null)
+	public function __construct($new = null, $input = null)
 	{
+		// new must be a nullable Request instance
+		if ( ! is_null($new) and ! $new instanceOf Request)
+		{
+			throw new \FuelException(__FUNCTION__ . ': Argument #1 ($new) must be an instance of Request, ' . gettype($new) . ' given');
+		}
+
+		// input must be a nullable Input_Instance instance
+		if ( ! is_null($input) and ! $input instanceOf Input_Instance)
+		{
+			throw new \FuelException(__FUNCTION__ . ': Argument #2 ($input) must be an instance of Input_Instance, ' . gettype($input) . ' given');
+		}
+
 		// store the associated request
 		$this->request = $new;
 

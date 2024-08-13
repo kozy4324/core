@@ -296,8 +296,14 @@ abstract class Database_Connection
 	 * @param   array   list of column names or array($column, $alias) or object
 	 * @return  Database_Query_Builder_Insert
 	 */
-	public function insert($table = null, array $columns = null)
+	public function insert($table = null, $columns = null)
 	{
+		// columns must be a nullable array
+		if ( ! is_null($columns) and ! is_array($columns))
+		{
+			throw new \FuelException(__FUNCTION__ . ': Argument #2 ($columns) must be of type array, ' . gettype($columns) . ' given');
+		}
+
 		$instance = new \Database_Query_Builder_Insert($table, $columns);
 		return $instance->set_connection($this);
 	}
