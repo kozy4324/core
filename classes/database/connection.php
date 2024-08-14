@@ -139,7 +139,7 @@ abstract class Database_Connection
 		$this->_instance = $name;
 
 		// make sure we have all connection parameters, add defaults for those missing
-		$this->_config = array_merge(array(
+		$this->_config = \Arr::merge(array(
 			'connection'  => array(
 				'dsn'        => '',
 				'hostname'   => '',
