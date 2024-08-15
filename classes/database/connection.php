@@ -455,7 +455,7 @@ abstract class Database_Connection
 	{
 		static $types = array(
 			// SQL-92
-			'bit'                           => array('type' => 'string', 'exact' => true),
+			'bit'                           => array('type' => 'int', 'min' => '0', 'max' => '1'),
 			'bit varying'                   => array('type' => 'string'),
 			'char'                          => array('type' => 'string', 'exact' => true),
 			'char varying'                  => array('type' => 'string'),
@@ -504,6 +504,9 @@ abstract class Database_Connection
 			'binary'            => array('type' => 'string', 'binary' => true, 'exact' => true),
 			'binary varying'    => array('type' => 'string', 'binary' => true),
 			'varbinary'         => array('type' => 'string', 'binary' => true),
+
+			// SQL:2012
+			'nvarchar'                 => array('type' => 'string'),
 		);
 
 		if (isset($types[$type]))
