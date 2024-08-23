@@ -50,6 +50,21 @@ class Database_Sqlsrv_Connection extends \Database_PDO_Connection
 	}
 
 	/**
+	 * Create a new [Database_Query_Builder_Delete].
+	 *
+	 *     // DELETE FROM users
+	 *     $query = $db->delete('users');
+	 *
+	 * @param   string  table to delete from
+	 * @return  Database_Query_Builder_Delete
+	 */
+	public function delete($table = null)
+	{
+		$instance = new \Database_Sqlsrv_Builder_Delete($table);
+		return $instance->set_connection($this);
+	}
+
+	/**
 	 * List tables
 	 *
 	 * @param string $like
