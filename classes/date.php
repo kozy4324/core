@@ -429,11 +429,6 @@ class Date
  	 */
 	public static function strftime($format, $timestamp = null)
 	{
-		if (function_exists('strftime') and version_compare(PHP_VERSION, '8.1.0', '<'))
-		{
-			return strftime($format, $timestamp);
-		}
-
 		if (is_null($timestamp))
 		{
 			$timestamp = new \DateTime;
@@ -477,6 +472,13 @@ class Date
 			{
 				$date_type = \IntlDateFormatter::LONG;
 				$time_type = \IntlDateFormatter::SHORT;
+			}
+			// %Q = Preferred date and time stamp based on locale
+			// Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
+			elseif ($format == '%Q')
+			{
+				$date_type = \IntlDateFormatter::LONG;
+				$time_type = \IntlDateFormatter::NONE;
 			}
 			// %x = Preferred date representation based on locale, without the time
 			// Example: 02/05/09 for February 5, 2009
@@ -570,6 +572,7 @@ class Date
 
 			// Time and Date Stamps
 			'%c' => $intl_formatter,
+			'%Q' => $intl_formatter,
 			'%D' => 'm/d/Y',
 			'%F' => 'Y-m-d',
 			'%s' => 'U',
