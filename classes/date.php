@@ -496,7 +496,7 @@ class Date
 				$pattern = $intl_formats[$format];
 			}
 
-			return (new \IntlDateFormatter(null, $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
+			return (new \IntlDateFormatter(setlocale(LC_TIME,0), $date_type, $time_type, $tz, null, $pattern))->format($timestamp);
 		};
 
 		// Same order as https://www.php.net/manual/en/function.strftime.php
