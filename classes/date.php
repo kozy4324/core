@@ -279,10 +279,27 @@ class Date
 		{
 			return '';
 		}
+		elseif ($timestamp instanceOf static)
+		{
+			$timestamp = $timestamp->get_timestamp();
+		}
+		elseif ( ! is_numeric($timestamp))
+		{
+			$timestamp = static::create_from_string($timestamp)->get_timestamp();
+		}
 
-		! is_numeric($timestamp) and $timestamp = static::create_from_string($timestamp)->get_timestamp();
-
-		$from_timestamp == null and $from_timestamp = time();
+		if ($from_timestamp === null)
+		{
+			$from_timestamp = time();
+		}
+		elseif ($from_timestamp instanceOf static)
+		{
+			$from_timestamp = $from_timestamp->get_timestamp();
+		}
+		elseif ( ! is_numeric($from_timestamp))
+		{
+			$from_timestamp = static::create_from_string($from_timestamp)->get_timestamp();
+		}
 
 		\Lang::load('date', true);
 
