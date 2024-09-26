@@ -29,7 +29,7 @@ class PhpErrorException extends \ErrorException
 		// handle the error based on the config and the environment we're in
 		if (static::$count <= \Config::get('errors.throttle', 10))
 		{
-			if (\Fuel::$env != \Fuel::PRODUCTION and ($this->code & error_reporting()) == $this->code)
+			if (strpos(\Fuel::$env, \Fuel::PRODUCTION) !== 0 and ($this->code & error_reporting()) == $this->code)
 			{
 				static::$count++;
 				\Errorhandler::exception_handler($this);
@@ -39,7 +39,7 @@ class PhpErrorException extends \ErrorException
 				logger(static::$loglevel, $this->code.' - '.$this->message.' in '.$this->file.' on line '.$this->line);
 			}
 		}
-		elseif (\Fuel::$env != \Fuel::PRODUCTION
+		elseif (strpos(\Fuel::$env, \Fuel::PRODUCTION) !== 0
 				and static::$count == (\Config::get('errors.throttle', 10) + 1)
 				and ($this->severity & error_reporting()) == $this->severity)
 		{
@@ -95,7 +95,7 @@ class Errorhandler
 			$error = new \ErrorException($last_error['message'], $last_error['type'], 0, $last_error['file'], $last_error['line']);
 			logger(static::$loglevel, $severity.' - '.$last_error['message'].' in '.$last_error['file'].' on line '.$last_error['line'], array('exception' => $error));
 
-			if (\Fuel::$env != \Fuel::PRODUCTION)
+			if (strpos(\Fuel::$env, \Fuel::PRODUCTION) !== 0)
 			{
 				static::show_php_error($error);
 			}
@@ -129,7 +129,7 @@ class Errorhandler
 
 			logger(static::$loglevel, $severity.' - '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine(), array('exception' => $e));
 
-			if (\Fuel::$env != \Fuel::PRODUCTION)
+			if (strpos(\Fuel::$env, \Fuel::PRODUCTION) !== 0)
 			{
 				static::show_php_error($e);
 			}
@@ -190,7 +190,7 @@ class Errorhandler
 		$trace = array_merge(array('file' => '(unknown)', 'line' => '(unknown)'), \Arr::get(debug_backtrace(), 1));
 		logger(\Fuel::L_DEBUG, 'Notice - '.$msg.' in '.$trace['file'].' on line '.$trace['line']);
 
-		if (\Fuel::$is_test or ( ! $always_show and (\Fuel::$env == \Fuel::PRODUCTION)))
+		if (\Fuel::$is_test or ( ! $always_show and (strpos(\Fuel::$env, \Fuel::PRODUCTION) === 0)))
 		{
 			return;
 		}

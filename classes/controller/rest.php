@@ -223,7 +223,7 @@ abstract class Controller_Rest extends \Controller
 		// Format not supported, but the output is an array or an object that can not be cast to string
 		elseif (is_array($data) or (is_object($data) and ! method_exists($data, '__toString')))
 		{
-			if (\Fuel::$env == \Fuel::PRODUCTION)
+			if (strpos(\Fuel::$env, \Fuel::PRODUCTION) === 0)
 			{
 				// not acceptable in production
 				if ($http_status == 200)
