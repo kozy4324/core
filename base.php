@@ -577,3 +577,20 @@ if ( ! function_exists('array_key_last'))
 		return null;
 	}
 }
+
+/**
+ * json_validate for PHP < 8.3.0
+ */
+if ( ! function_exists('json_validate'))
+{
+	function json_validate($json, $depth = 512, $flags = 0)
+	{
+		if ( ! is_string($json))
+		{
+			return false;
+		}
+
+		json_decode($json, false, $depth, $flags);
+		return json_last_error() === JSON_ERROR_NONE;
+	}
+}
