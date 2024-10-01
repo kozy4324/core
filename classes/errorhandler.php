@@ -69,7 +69,6 @@ class Errorhandler
 		E_USER_ERROR        => 'User Error',
 		E_USER_WARNING      => 'User Warning',
 		E_USER_NOTICE       => 'User Notice',
-		E_STRICT            => 'Runtime Notice',
 		E_RECOVERABLE_ERROR => 'Runtime Recoverable error',
 		E_DEPRECATED        => 'Runtime Deprecated code usage',
 		E_USER_DEPRECATED   => 'User Deprecated code usage',
@@ -78,6 +77,17 @@ class Errorhandler
 	public static $fatal_levels = array(E_PARSE, E_ERROR, E_USER_ERROR, E_COMPILE_ERROR);
 
 	public static $non_fatal_cache = array();
+
+	/**
+	 * class init on load
+	 */
+	public static function _init()
+	{
+		if (PHP_VERSION_ID < 80400)
+		{
+			$levels[E_STRICT] = 'Runtime Notice';
+		}
+	}
 
 	/**
 	 * Native PHP shutdown handler
