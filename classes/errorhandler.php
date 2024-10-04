@@ -85,7 +85,7 @@ class Errorhandler
 	{
 		if (PHP_VERSION_ID < 80400)
 		{
-			$levels[E_STRICT] = 'Runtime Notice';
+			static::$levels[E_STRICT] = 'Runtime Notice';
 		}
 	}
 
