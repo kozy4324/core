@@ -20,7 +20,7 @@ namespace Fuel\Core;
  */
 class Test_Inflector extends TestCase
 {
-	public function ordinalize_provider()
+	public static function ordinalize_provider()
 	{
 		return array(
 			array(1, 'st'),
@@ -259,7 +259,7 @@ class Test_Inflector extends TestCase
 		$this->assertEquals('equipment', Inflector::singularize('equipment'));
 	}
 
-	public function tableize_provider()
+	public static function tableize_provider()
 	{
 		return array(
 			array('\\Model\\User', 'users'),
@@ -282,7 +282,7 @@ class Test_Inflector extends TestCase
 		$this->assertEquals(Inflector::tableize($class), $table);
 	}
 
-	public function get_namespace_provider()
+	public static function get_namespace_provider()
 	{
 		return array(
 			array('\\Model\\User', 'Model\\'),

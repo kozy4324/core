@@ -23,7 +23,7 @@ class Test_Agent extends TestCase
 	/**
 	 * need to setup a fake browser environment
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		// make sure we've got the Agent class in a known state
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-us,en;q=0.8,nl-be;q=0.5,nl;q=0.3';
@@ -67,11 +67,11 @@ class Test_Agent extends TestCase
  	{
 		$expected = 3.6;
 		$output = Agent::version();
-		$this->assertInternalType('float', $output);
+		$this->assertIsFloat($output);
 		$this->assertEquals($expected, $output);
 	}
 
-	public function property_provider()
+	public static function property_provider()
  	{
 		return array(
 			array(

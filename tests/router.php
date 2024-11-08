@@ -23,7 +23,7 @@ class Test_Router extends TestCase
     /**
      * Provider for test_classnames.
      */
-    public function provider_test_classnames()
+    public static function provider_test_classnames()
     {
         return array(
             array(

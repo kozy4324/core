@@ -29,7 +29,7 @@ class FakeRequest extends Request_Driver {
  */
 class Test_Request extends TestCase
 {
-	public function mime_testpairs()
+	public static function mime_testpairs()
 	{
 		return [
 			['application/json', '*/*', true],
@@ -52,7 +52,7 @@ class Test_Request extends TestCase
 		$this->assertSame($expected, $req->test_mime_in_header($response_mime, $accept_header));
 	}
 
-	public function auto_format_testdata()
+	public static function auto_format_testdata()
 	{
 		return [
 			['text/csv', "\"first\",\"second\",\"third\"\n\"1\",\"2\",\"3\"\n", '*/*', [['first' => '1', 'second' => '2', 'third' => '3']]],

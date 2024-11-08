@@ -20,7 +20,7 @@ namespace Fuel\Core;
  */
 class Test_Error extends TestCase
 {
- 	public function test_foo() {}
+	public function test_foo() { $this->assertTrue(true); }
 }
 // TestCase {
 // 	public function test_foo() {}

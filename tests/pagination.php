@@ -20,6 +20,11 @@ namespace Fuel\Core;
  */
 class Test_Pagination extends TestCase
 {
+	private $pathinfo;
+	private $request;
+	private $old_base_url;
+	private $config;
+
 	protected function set_request($uri)
 	{
 		// fake the uri for this request
@@ -38,12 +43,17 @@ class Test_Pagination extends TestCase
 		$rp->setValue($this->request, $this->request);
 	}
 
-	protected function setUp()
+	public static function setupBeforeClass(): void
+	{
+		Config::set('base_url', '');
+	}
+
+	protected function setUp(): void
 	{
 		$this->old_base_url = Config::get('base_url');
 	}
 
-	public function tearDown()
+	public function tearDown(): void
 	{
 		// remove the fake uri
 		if (property_exists($this, 'pathinfo'))
@@ -605,7 +615,7 @@ class Test_Pagination extends TestCase
 		$this->set_request('/');
 
 		$this->set_query_string_config();
-		$this->config['pagination_url'] = null;
+		$this->config['pagination_url'] = 'http://docs.fuelphp.com/';
 		$pagination = Pagination::forge(__METHOD__, $this->config);
 
 		// set _make_link() accessible

@@ -20,5 +20,5 @@ namespace Fuel\Core;
  */
 class Test_Database_PDO_Result extends TestCase
 {
- 	public function test_foo() {}
+	public function test_foo() { $this->assertTrue(true); }
 }

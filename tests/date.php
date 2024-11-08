@@ -20,7 +20,7 @@ namespace Fuel\Core;
  */
 class Test_Date extends TestCase
 {
-	protected function setUp()
+	protected function setUp(): void
 	{
 		// make sure the locale and language are is set correctly for the tests
 		setlocale(LC_ALL, 'en_US') === false and setlocale(LC_ALL, 'en_US.UTF8');
@@ -54,6 +54,7 @@ class Test_Date extends TestCase
 	 */
 	public function test_days_in_month_0_exception()
 	{
+		$this->expectException(\UnexpectedValueException::class);
 		$output = Date::days_in_month(0);
 	}
 
@@ -64,6 +65,7 @@ class Test_Date extends TestCase
 	 */
 	public function test_days_in_month_13_exception()
 	{
+		$this->expectException(\UnexpectedValueException::class);
 		$output = Date::days_in_month(13);
 	}
 
@@ -236,6 +238,7 @@ class Test_Date extends TestCase
 	 */
 	public function test_range_to_array_invalid()
 	{
+		$this->expectException(\UnexpectedValueException::class);
 		$start = Date::create_from_string('2015-10-01', '%Y-%m-%d');
 		$end   = Date::create_from_string('2015-10-02', '%Y-%m-%d');
 		$range = Date::range_to_array($start, $end, "-2 days");
