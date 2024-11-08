@@ -24,6 +24,11 @@ namespace Fuel\Core;
  */
 class Test_Num extends TestCase
 {
+	protected function setUp()
+	{
+		\Num::_init();
+	}
+
 	/**
 	 * @see     Num::bytes
 	 */

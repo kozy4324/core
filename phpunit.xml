@@ -23,4 +23,14 @@
 			<directory suffix=".php">../app/modules/*/tests</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../core/classes</directory>
+			<exclude>
+				<file>../core/classes/config/ini.php</file>
+				<file>../core/classes/sessionhandler84.php</file>
+				<file>../core/classes/testcase.php</file>
+			</exclude>
+		</whitelist>
+	</filter>
 </phpunit>
